@@ -1,69 +1,44 @@
-<div class="welcome-page">
+<div class="question-block">
 
-  <div class="welcome-card">
+    <span class="question-label">
+        Do you have current pain?
+        (None must be unchecked if you wish to select anything else)
+    </span>
 
-    <img
-      src="assets/questionnaire.jpeg"
-      alt="Gait and Motion Analysis Laboratory Patient Questionnaire"
-      class="welcome-banner"
-    />
+    <div class="option-list option-list-grid">
 
-    <div class="welcome-content">
+        @for (
+            option of painLocationOptions;
+            track option
+        ) {
 
-      <p class="intro-text">
-        In order to better understand our patients,
-        we need your help with some history about
-        <strong>{{ patientName }}</strong>.
-      </p>
+            <label
+                class="radio-option"
+                [class.disabled-choice]="
+                    isPainDisabled(option)
+                "
+            >
 
-      <div class="questionnaire-section">
+                <input
+                    type="checkbox"
+                    [checked]="
+                        isPainSelected(option)
+                    "
+                    [disabled]="
+                        isPainDisabled(option)
+                    "
+                    (change)="
+                        togglePainLocation(option)
+                    "
+                />
 
-        <p class="section-title">
-          The following questionnaire needs to be completed:
-        </p>
+                {{ painLocationLabel(option) }}
 
-        <ul class="questionnaire-list">
+            </label>
 
-          @for (
-            questionnaire of questionnaireNames;
-            track questionnaire
-          ) {
-
-            <li>
-              {{ questionnaire }}
-            </li>
-
-          }
-
-        </ul>
-
-      </div>
-
-      <p class="info-text">
-        If you have any questions while completing the questionnaire,
-        please don't hesitate to ask a member of our staff for help.
-      </p>
-
-      <p class="info-text">
-        These questions will be asked on each visit so we can stay
-        up to date with you.
-      </p>
-
-      <div class="welcome-actions">
-
-        <button
-          type="button"
-          class="start-button"
-          (click)="start()"
-        >
-          Start
-        </button>
-
-      </div>
+        }
 
     </div>
-
-  </div>
 
 </div>
 
@@ -75,164 +50,74 @@
 
 
 
+readonly painLocationOptions = [
+    'None',
+    'Back',
+    'R Hip',
+    'L Hip',
+    'R Knee',
+    'L Knee',
+    'R Ankle',
+    'L Ankle',
+    'R Foot',
+    'L Foot',
+    'R Thigh',
+    'L Thigh',
+    'R Lower leg',
+    'L Lower leg'
+];
 
-.welcome-page {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 28px 24px 50px;
-  box-sizing: border-box;
+painLocationLabel(location: string): string {
+    if (location.startsWith('R ')) {
+        return `Right ${location.substring(2)}`;
+    }
+
+    if (location.startsWith('L ')) {
+        return `Left ${location.substring(2)}`;
+    }
+
+    return location;
 }
 
-.welcome-card {
-  width: 100%;
-  max-width: 1000px;
-  background: #ffffff;
-  border: 1px solid #dfe5e8;
-  border-radius: 10px;
-  overflow: hidden;
-  box-sizing: border-box;
+isPainSelected(location: string): boolean {
+    return this.answers.painLocations.includes(location);
 }
 
-.welcome-banner {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+isPainDisabled(location: string): boolean {
+    return (
+        location !== 'None' &&
+        this.isPainSelected('None')
+    );
 }
 
-.welcome-content {
-  padding: 34px 40px 36px;
-}
+togglePainLocation(location: string): void {
+    const selected =
+        this.isPainSelected(location);
 
-.intro-text {
-  margin: 0 0 28px;
-  color: #37474f;
-  font-size: 16px;
-  line-height: 1.65;
-}
+    if (location === 'None') {
 
-.questionnaire-section {
-  margin-bottom: 28px;
-}
+        if (selected) {
+            this.answers.painLocations = [];
+        } else {
+            this.answers.painLocations = ['None'];
+        }
 
-.section-title {
-  margin: 0 0 12px;
-  color: #263238;
-  font-size: 16px;
-  font-weight: 600;
-}
+        return;
+    }
 
-.questionnaire-list {
-  margin: 0;
-  padding-left: 24px;
-}
+    if (this.isPainSelected('None')) {
+        return;
+    }
 
-.questionnaire-list li {
-  margin-bottom: 8px;
-  color: #37474f;
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.info-text {
-  margin: 0 0 20px;
-  color: #546168;
-  font-size: 15px;
-  line-height: 1.65;
-}
-
-.welcome-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 32px;
-}
-
-.start-button {
-  min-width: 120px;
-  height: 42px;
-  padding: 0 26px;
-  border: none;
-  border-radius: 6px;
-  background: #009688;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.start-button:hover {
-  background: #00796b;
-}
-
-@media (max-width: 700px) {
-
-  .welcome-page {
-    padding: 18px 14px 40px;
-  }
-
-  .welcome-content {
-    padding: 24px 20px 28px;
-  }
-
-  .intro-text,
-  .section-title,
-  .info-text {
-    font-size: 14px;
-  }
-
-  .questionnaire-list li {
-    font-size: 14px;
-  }
-
-  .welcome-actions {
-    justify-content: stretch;
-  }
-
-  .start-button {
-    width: 100%;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-@Component({
-  selector: 'app-questionnaire-welcome',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './questionnaire-welcome.html',
-  styleUrl: './questionnaire-welcome.css'
-})
-export class QuestionnaireWelcome {
-
-  @Input() patientName = '';
-
-  @Input()
-  questionnaireNames:
-    string[] = [];
-
-  @Output()
-  startQuestionnaire =
-    new EventEmitter<void>();
-
-  start(): void {
-    this.startQuestionnaire.emit();
-  }
+    if (selected) {
+        this.answers.painLocations =
+            this.answers.painLocations.filter(
+                item => item !== location
+            );
+    } else {
+        this.answers.painLocations = [
+            ...this.answers.painLocations,
+            location
+        ];
+    }
 }
