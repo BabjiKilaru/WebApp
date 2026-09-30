@@ -1,226 +1,238 @@
-.session-page {
-  min-height: 100vh;
-  background: #f5f7f8;
-}
+<div class="welcome-page">
 
-.session-content {
+  <div class="welcome-card">
+
+    <img
+      src="assets/questionnaire.jpeg"
+      alt="Gait and Motion Analysis Laboratory Patient Questionnaire"
+      class="welcome-banner"
+    />
+
+    <div class="welcome-content">
+
+      <p class="intro-text">
+        In order to better understand our patients,
+        we need your help with some history about
+        <strong>{{ patientName }}</strong>.
+      </p>
+
+      <div class="questionnaire-section">
+
+        <p class="section-title">
+          The following questionnaire needs to be completed:
+        </p>
+
+        <ul class="questionnaire-list">
+
+          @for (
+            questionnaire of questionnaireNames;
+            track questionnaire
+          ) {
+
+            <li>
+              {{ questionnaire }}
+            </li>
+
+          }
+
+        </ul>
+
+      </div>
+
+      <p class="info-text">
+        If you have any questions while completing the questionnaire,
+        please don't hesitate to ask a member of our staff for help.
+      </p>
+
+      <p class="info-text">
+        These questions will be asked on each visit so we can stay
+        up to date with you.
+      </p>
+
+      <div class="welcome-actions">
+
+        <button
+          type="button"
+          class="start-button"
+          (click)="start()"
+        >
+          Start
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+.welcome-page {
   width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 28px 30px 70px;
+  display: flex;
+  justify-content: center;
+  padding: 28px 24px 50px;
   box-sizing: border-box;
 }
 
-.status-card {
-  max-width: 700px;
-  margin: 50px auto;
-  padding: 30px;
+.welcome-card {
+  width: 100%;
+  max-width: 1000px;
   background: #ffffff;
   border: 1px solid #dfe5e8;
   border-radius: 10px;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
-.status-card h2 {
-  margin: 0 0 12px;
-  color: #263238;
-  font-size: 22px;
-  font-weight: 700;
+.welcome-banner {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
-.status-card p {
+.welcome-content {
+  padding: 34px 40px 36px;
+}
+
+.intro-text {
+  margin: 0 0 28px;
+  color: #37474f;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.questionnaire-section {
+  margin-bottom: 28px;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  color: #263238;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.questionnaire-list {
   margin: 0;
-  color: #607078;
-  font-size: 14px;
+  padding-left: 24px;
+}
+
+.questionnaire-list li {
+  margin-bottom: 8px;
+  color: #37474f;
+  font-size: 15px;
   line-height: 1.5;
 }
 
-.questionnaire-header {
-  margin-bottom: 16px;
+.info-text {
+  margin: 0 0 20px;
+  color: #546168;
+  font-size: 15px;
+  line-height: 1.65;
 }
 
-.progress {
-  margin-bottom: 4px;
-  color: #728087;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.2px;
-}
-
-.questionnaire-header h1 {
-  margin: 0;
-  color: #263238;
-  font-size: 25px;
-  font-weight: 700;
-}
-
-.questionnaire-body {
-  width: 100%;
-  background: #ffffff;
-  border: 1px solid #dfe5e8;
-  border-radius: 10px;
-  padding: 26px;
-  box-sizing: border-box;
-}
-
-.questionnaire-actions {
-  position: sticky;
-  bottom: 0;
-  z-index: 30;
-
+.welcome-actions {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 16px;
-
-  width: 100%;
-  padding: 16px 0;
-  margin-top: 18px;
-
-  background: #f5f7f8;
-
-  box-sizing: border-box;
-}
-
-.action-message {
-  display: flex;
-  align-items: center;
-
-  flex: 1;
-  min-width: 0;
-}
-
-.bottom-error-message {
-  display: inline-block;
-
-  max-width: 100%;
-
-  padding: 9px 13px;
-
-  border: 1px solid #e3a9a9;
-  border-radius: 6px;
-
-  background: #fff3f3;
-  color: #a12626;
-
-  font-size: 13px;
-  line-height: 1.4;
-
-  box-sizing: border-box;
-}
-
-.action-buttons {
-  display: flex;
-  align-items: center;
   justify-content: flex-end;
-
-  gap: 10px;
-
-  flex-shrink: 0;
+  margin-top: 32px;
 }
 
-.primary-button,
-.secondary-button {
-  min-height: 40px;
-  padding: 0 20px;
-
-  border-radius: 6px;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  white-space: nowrap;
-
-  cursor: pointer;
-
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    opacity 0.15s ease;
-}
-
-.primary-button {
+.start-button {
+  min-width: 120px;
+  height: 42px;
+  padding: 0 26px;
   border: none;
-
+  border-radius: 6px;
   background: #009688;
   color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.primary-button:hover:not(:disabled) {
+.start-button:hover {
   background: #00796b;
 }
 
-.secondary-button {
-  border: 1px solid #aebbc0;
-
-  background: #ffffff;
-  color: #455a64;
-}
-
-.secondary-button:hover:not(:disabled) {
-  background: #f3f6f7;
-  border-color: #91a1a8;
-}
-
-.primary-button:disabled,
-.secondary-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.error-message {
-  margin-bottom: 16px;
-  padding: 12px 15px;
-
-  border: 1px solid #e3a9a9;
-  border-radius: 6px;
-
-  background: #fff3f3;
-  color: #a12626;
-
-  font-size: 13px;
-  line-height: 1.4;
-}
-
 @media (max-width: 700px) {
-  .session-content {
-    padding: 18px 14px 50px;
+
+  .welcome-page {
+    padding: 18px 14px 40px;
   }
 
-  .questionnaire-body {
-    padding: 18px;
+  .welcome-content {
+    padding: 24px 20px 28px;
   }
 
-  .questionnaire-actions {
-    align-items: stretch;
-    flex-direction: column;
-
-    gap: 10px;
-
-    padding: 12px 0;
+  .intro-text,
+  .section-title,
+  .info-text {
+    font-size: 14px;
   }
 
-  .action-message {
+  .questionnaire-list li {
+    font-size: 14px;
+  }
+
+  .welcome-actions {
+    justify-content: stretch;
+  }
+
+  .start-button {
     width: 100%;
   }
+}
 
-  .bottom-error-message {
-    width: 100%;
-  }
 
-  .action-buttons {
-    width: 100%;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
 
-    gap: 10px;
-  }
 
-  .primary-button,
-  .secondary-button {
-    width: 100%;
+
+
+
+
+
+
+
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-questionnaire-welcome',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './questionnaire-welcome.html',
+  styleUrl: './questionnaire-welcome.css'
+})
+export class QuestionnaireWelcome {
+
+  @Input() patientName = '';
+
+  @Input()
+  questionnaireNames:
+    string[] = [];
+
+  @Output()
+  startQuestionnaire =
+    new EventEmitter<void>();
+
+  start(): void {
+    this.startQuestionnaire.emit();
   }
 }
